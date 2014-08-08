@@ -10,3 +10,7 @@ github_username:  pschloss
 # Build settings
 markdown: kramdown
 permalink: pretty
+
+github:
+  repo:           github.com/mothurblog/mothurblog.github.io
+

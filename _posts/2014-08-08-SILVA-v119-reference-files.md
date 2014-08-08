@@ -3,7 +3,11 @@ layout: post
 title: "README for the SILVA v119 reference files"
 author: "PD Schloss"
 date: "August 8, 2014"
+comments: true
 ---
+The good people at [SILVA](http://arb-silva.de) have released a new version of the SILVA database. A little bit of tweaking is needed to get their files to be compatible with mothur. This README document describes the process that I used to generate the [mothur-compatible reference files](http://www.mothur.org/wiki/Silva_reference_files).
+
+
 
 ##Curation of references  
 
@@ -210,3 +214,5 @@ mothur "#pcr.seqs(fasta=silva.nr_v119.align, start=11894, end=25319, keepdots=F,
 {% endhighlight %}
 
 This will get you 104,711 unique sequences to then align against (meh.). Other tricks to consider would be to use `get.lineage` to pull out the reference sequences that are from the Bacteria, this will probably only reduce the size of the database by ~10%. You could also try using `filter.seqs` with vertical=T; however, that might be problematic if there are insertions in your sequences (can't know *a priori*). It's likely that you can just use the `silva.seed_v119.align` reference for aligning. For classifying sequences, I would strongly recommend using the `silva.nr_v119.align` and `silva.nr_v119.tax` references after running pcr.seqs on `silva.nr_v119.align`. I probably wouldn't advise using `unique.seqs` on the output.
+
+{% include twitter_plug.html %}
