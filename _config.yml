@@ -1,0 +1,12 @@
+# Site settings
+title: The mothur blog
+email: pschloss@umich.edu
+description: "A discussion of quantitative isues in microbial ecology"
+baseurl: ""
+url: "http://blog.mothur.org"
+twitter_username: patschloss
+github_username:  pschloss
+
+# Build settings
+markdown: kramdown
+permalink: pretty
