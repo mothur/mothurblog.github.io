@@ -1,16 +1,13 @@
 ---
-layout: post
 title: "README for the SILVA v119 reference files"
-author: "PD Schloss"
-date: "August 8, 2014"
-comments: true
+author: "Patrick D. Schloss"
+date: "August 5, 2014"
+output:
+  html_document:
+    keep_md: true
 ---
-The good people at [SILVA](http://arb-silva.de) have released a new version of the SILVA database. A little bit of tweaking is needed to get their files to be compatible with mothur. This README document describes the process that I used to generate the [mothur-compatible reference files](http://www.mothur.org/wiki/Silva_reference_files).
 
-
-
-##Curation of references  
-
+##Curation of references
 ###Getting the data in and out of the ARB database
 This README file explains how we generated the silva reference files for use with mothur's classify.seqs and align.seqs commands. I'll assume that you have a functioning copy of arb installed on your comptuer. For this README we are using version 6.0. First we need to download the database and decompress it. From the command line we do the following:
 
@@ -33,12 +30,12 @@ This will launch us into the arb environment with the ''Ref NR 99'' database ope
 1. In the field for `Choose an output file name enter` make sure the path has you in the `arb_ref_119` folder and enter `silva.full_v119.fasta`.
 1. Select a format: fasta_mothur.eft. This is a custom formatting file that I have created that includes the sequences accession number and it's taxonomy across the top line. To create one for you will need to create `fasta_mothur.eft` in the `/opt/local/share/arb/lib/export/` folder with the following:
 
-     SUFFIX          fasta
-     BEGIN
-     >*(acc).*(name)\t*(align_ident_slv)\t*(tax_slv);
-     *(|export_sequence)
-    
-You can now quit arb.  
+    SUFFIX          fasta
+    BEGIN
+    >*(acc).*(name)\t*(align_ident_slv)\t*(tax_slv);
+    *(|export_sequence)
+
+1. You can now quit arb.  
   
 ###Screening the sequences
 Now we need to screen the sequences for those that span the 27f and 1492r primer region, have 5 or fewer ambiguous base calls, and that are unique. We'll also extract the taxonomic information from the header line:
@@ -69,7 +66,7 @@ Now we want to make sure the taxonomy file is properly formatted for use with mo
 tax <- read.table(file="silva.full_v119.tax.temp", sep="\t")
 tax$V2 <- gsub(" ", "_", tax$V2)  #convert any spaces to underscores
 tax$V2 <- gsub("uncultured;", "", tax$V2)   #remove any "uncultured" taxa names
-tax$V2 <- paste0("Root;", tax$V2)   #pre-empt all classifications with the Root level.
+#tax$V2 <- paste0("Root;", tax$V2)   #pre-empt all classifications with the Root level.
 
 #we want to see whether everything has 7 (6) taxonomic levesl (Root to genus)
 getDepth <- function(taxonString){
@@ -83,15 +80,15 @@ bacteria <- grepl("Bacteria;", tax$V2)
 archaea <- grepl("Archaea;", tax$V2)
 eukarya <- grepl("Eukaryota;", tax$V2)
 
-tax[depth > 7 & bacteria,]   #we see that 5 sequences have an 8th level that is actually a repeat of level 7; let's fix that
-tax[depth > 7 & bacteria,2] <- gsub("([^;]*);\\1;$", "\\1;", tax[depth > 7 & bacteria,2] )
+tax[depth > 6 & bacteria,]   #we see that 5 sequences have an 7th level that is actually a repeat of level 6; let's fix that
+tax[depth > 6 & bacteria,2] <- gsub("([^;]*);\\1;$", "\\1;", tax[depth > 6 & bacteria,2] )
 depth <- getDepth(tax$V2)
-tax[depth > 7 & bacteria,] #good to go
-tax[depth > 7 & archaea,]  #good to go
-tax[depth > 7 & eukarya,]  #eh, there's a lot here - will truncate to the pseudo genus level
-tax[depth > 7 & eukarya,2] <- gsub("([^;]*;[^;]*;[^;]*;[^;]*;[^;]*;[^;]*;[^;]*;).*", "\\1", tax[depth > 7 & eukarya,2])
+tax[depth > 6 & bacteria,] #good to go
+tax[depth > 6 & archaea,]  #good to go
+tax[depth > 6 & eukarya,]  #eh, there's a lot here - will truncate to the pseudo genus level
+tax[depth > 6 & eukarya,2] <- gsub("([^;]*;[^;]*;[^;]*;[^;]*;[^;]*;[^;]*;).*", "\\1", tax[depth > 6 & eukarya,2])
 depth <- getDepth(tax$V2)
-tax[depth > 7 & eukarya,]  #good to go
+tax[depth > 6 & eukarya,]  #good to go
 
 write.table(tax, file="silva.full_v119.tax", quote=F, row.names=F, col.names=F)
 {% endhighlight %}
@@ -120,20 +117,20 @@ getNumTaxaNames <- function(file, kingdom){
   taxonomy <- read.table(file=file, row.names=1)
   sub.tax <- as.character(taxonomy[grepl(kingdom, taxonomy[,1]),])
   
-  phyla <- as.vector(levels(as.factor(gsub("[^;]*;[^;]*;([^;]*;).*", "\\1", sub.tax))))
-  phyla <- sum(!grepl("Root", phyla))
+  phyla <- as.vector(levels(as.factor(gsub("[^;]*;([^;]*;).*", "\\1", sub.tax))))
+  phyla <- sum(!grepl(kingdom, phyla))
   
-  class <- as.vector(levels(as.factor(gsub("[^;]*;[^;]*;[^;]*;([^;]*;).*", "\\1", sub.tax))))
-  class <- sum(!grepl("Root", class))
+  class <- as.vector(levels(as.factor(gsub("[^;]*;[^;]*;([^;]*;).*", "\\1", sub.tax))))
+  class <- sum(!grepl(kingdom, class))
   
-  order <- as.vector(levels(as.factor(gsub("[^;]*;[^;]*;[^;]*;[^;]*;([^;]*;).*", "\\1", sub.tax))))
-  order <- sum(!grepl("Root", order))
+  order <- as.vector(levels(as.factor(gsub("[^;]*;[^;]*;[^;]*;([^;]*;).*", "\\1", sub.tax))))
+  order <- sum(!grepl(kingdom, order))
   
-  family <- as.vector(levels(as.factor(gsub("[^;]*;[^;]*;[^;]*;[^;]*;[^;]*;([^;]*;).*", "\\1", sub.tax))))
-  family <- sum(!grepl("Root", family))
+  family <- as.vector(levels(as.factor(gsub("[^;]*;[^;]*;[^;]*;[^;]*;([^;]*;).*", "\\1", sub.tax))))
+  family <- sum(!grepl(kingdom, family))
   
-  genus <- as.vector(levels(as.factor(gsub("[^;]*;[^;]*;[^;]*;[^;]*;[^;]*;[^;]*;([^;]*;).*", "\\1", sub.tax))))
-  genus <- sum(!grepl("Root", genus))
+  genus <- as.vector(levels(as.factor(gsub("[^;]*;[^;]*;[^;]*;[^;]*;[^;]*;([^;]*;).*", "\\1", sub.tax))))
+  genus <- sum(!grepl(kingdom, genus))
 
   n.seqs <- length(sub.tax)
   return(c(phyla=phyla, class=class, order=order, family=family, genus=genus, n.seqs=n.seqs))
@@ -184,13 +181,13 @@ seed.matrix
 nr.matrix / full.matrix
 #              phyla     class     order    family     genus
 #Bacteria  0.9672131 0.9729730 0.9520958 0.9413629 0.9530907
-#Archaea   0.8750000 0.6750000 0.8571429 0.8400000 0.9534884
+#Archaea   0.8571429 0.6750000 0.8571429 0.8400000 0.9534884
 #Eukaryota 0.6923077 0.6666667 0.8048780 0.7000000 0.7715092
 
 seed.matrix / full.matrix
 #              phyla     class     order    family     genus
 #Bacteria  0.8032787 0.6418919 0.5658683 0.6053883 0.6773345
-#Archaea   0.5000000 0.3500000 0.5142857 0.4133333 0.5116279
+#Archaea   0.5714286 0.3500000 0.5142857 0.4133333 0.5116279
 #Eukaryota 0.5384615 0.4666667 0.2804878 0.2647059 0.1791255
 {% endhighlight %}
 
@@ -214,5 +211,3 @@ mothur "#pcr.seqs(fasta=silva.nr_v119.align, start=11894, end=25319, keepdots=F,
 {% endhighlight %}
 
 This will get you 104,711 unique sequences to then align against (meh.). Other tricks to consider would be to use `get.lineage` to pull out the reference sequences that are from the Bacteria, this will probably only reduce the size of the database by ~10%. You could also try using `filter.seqs` with vertical=T; however, that might be problematic if there are insertions in your sequences (can't know *a priori*). It's likely that you can just use the `silva.seed_v119.align` reference for aligning. For classifying sequences, I would strongly recommend using the `silva.nr_v119.align` and `silva.nr_v119.tax` references after running pcr.seqs on `silva.nr_v119.align`. I probably wouldn't advise using `unique.seqs` on the output.
-
-{% include twitter_plug.html %}
