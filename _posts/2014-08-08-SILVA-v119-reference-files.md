@@ -1,10 +1,9 @@
 ---
+layout: post
 title: "README for the SILVA v119 reference files"
-author: "Patrick D. Schloss"
-date: "August 5, 2014"
-output:
-  html_document:
-    keep_md: true
+author: "PD. Schloss"
+date: "August 8, 2014"
+comments: true
 ---
 
 ##Curation of references
