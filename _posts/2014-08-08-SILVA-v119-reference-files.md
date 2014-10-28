@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "README for the SILVA v119 reference files"
-author: "PD. Schloss"
+author: "PD Schloss"
 date: "August 8, 2014"
 comments: true
 ---
