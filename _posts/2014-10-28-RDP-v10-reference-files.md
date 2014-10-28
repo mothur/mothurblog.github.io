@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "README"
+title: "README for the RDP v10 reference files"
 author: "Patrick D. Schloss"
 date: "October 28, 2014"
 comments: true
