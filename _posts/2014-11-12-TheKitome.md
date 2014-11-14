@@ -36,6 +36,7 @@ you might want to go and check out as well...
 * [*The Scientist*](http://www.the-scientist.com/?articles.view/articleNo/41421/title/DNA-Extraction-Kits-Contaminated/)
 * [*National Geographic*](http://phenomena.nationalgeographic.com/2014/11/11/contaminomics-why-some-microbiome-studies-may-be-wrong/)
 * [*Science News*](http://news.sciencemag.org/biology/2014/11/contamination-plagues-some-microbiome-studies)
+* [*Nature*](http://www.nature.com/news/microbiome-science-threatened-by-contamination-1.16327)
 
 I talked with Kerr Grens for her article in *The Scientist* and she boiled our
 30 min conversation down to 3 nice quotes. I'll expand on those for everyone's
