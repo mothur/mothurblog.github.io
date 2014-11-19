@@ -7,8 +7,8 @@ comments: true
 ---
 The good people at [SILVA](http://arb-silva.de) have released a new version of the SILVA database. A little bit of tweaking is needed to get their files to be compatible with mothur. This README document describes the process that I used to generate the [mothur-compatible reference files](http://www.mothur.org/wiki/Silva_reference_files).
 
-##Curation of references
-###Getting the data in and out of the ARB database
+## Curation of references
+### Getting the data in and out of the ARB database
 This README file explains how we generated the silva reference files for use with mothur's classify.seqs and align.seqs commands. I'll assume that you have a functioning copy of arb installed on your comptuer. For this README we are using version 6.0. First we need to download the database and decompress it. From the command line we do the following:
 
 
@@ -36,8 +36,8 @@ This will launch us into the arb environment with the ''Ref NR 99'' database ope
     *(|export_sequence)
 
 1. You can now quit arb.  
-  
-###Screening the sequences
+
+### Screening the sequences
 Now we need to screen the sequences for those that span the 27f and 1492r primer region, have 5 or fewer ambiguous base calls, and that are unique. We'll also extract the taxonomic information from the header line:
 
 
@@ -58,7 +58,7 @@ grep "^>" silva.full_v119.fasta | cut -f 1,3 | cut -c 2- > silva.full_v119.tax.t
 
 The mothur command above does several things. First the screen.seqs command removes sequences that are not full length and have more than 5 ambiguous base calls. Note: this will remove a number of Archaea since the ARB RN reference database lets in shorter (>900 bp) archaeal 16S rRNA gene sequences. Second, pcr.seqs convert any base calls that occur before position 1044 and after 43116 to `.` to make them only span the region between the 27f and 1492r priming sites. Finally, it is possible that weird things happen in the alignments and so we unalign the sequences (degap.seqs) and identify the unique sequences (unique.seqs). We then convert the resulting fasta file into an accnos file so that we can go back into mothur and pull out the unique sequences from the aligned file (get.seqs).  
 
-###Formatting the taxonomy files
+### Formatting the taxonomy files
 Now we want to make sure the taxonomy file is properly formatted for use with mothur.
 
 
@@ -93,8 +93,8 @@ tax[depth > 6 & eukarya,]  #good to go
 write.table(tax, file="silva.full_v119.tax", quote=F, row.names=F, col.names=F)
 {% endhighlight %}
 
-###Building the SEED references
-Now we want to figure out which sequences are part of the seed. Earlier, when we exported the sequences from ARB, we included the align_ident_slv field from the database in our output. Let's generate an accnos file that contains the names of the seuqences with 100% to the SEED database and then use mothur to generate SEED fasta and taxonomy files. While we're at it we'll also generate the nr_119 taxonomy file as well...:
+### Building the SEED references
+The first thing to note is that SILVA does not release their SEED; it is private. By screening through the ARB databases we can attempat to recreate it. Our previuos publications show that classify.seqs with the recreated SEED does an excellent job of realigning sequences to look like they would if you used SINA and the true SEED. Now we want to try to figure out which sequences are part of the seed. Earlier, when we exported the sequences from ARB, we included the align_ident_slv field from the database in our output. Let's generate an accnos file that contains the names of the seuqences with 100% to the SEED database and then use mothur to generate SEED fasta and taxonomy files. While we're at it we'll also generate the nr_119 taxonomy file as well...:
 
 
 {% highlight bash %}
@@ -108,7 +108,7 @@ mv silva.full_v119.pick.tax silva.nr_v119.tax
 {% endhighlight %}
 
 
-###Taxonomic representation
+### Taxonomic representation
 Let's look to see how many different taxa we have for each taxonomic level within the `silva.full_v119.tax`, `silva.nr_v119.tax`, `silva.seed_v119.tax`:
 
 
@@ -116,19 +116,19 @@ Let's look to see how many different taxa we have for each taxonomic level withi
 getNumTaxaNames <- function(file, kingdom){
   taxonomy <- read.table(file=file, row.names=1)
   sub.tax <- as.character(taxonomy[grepl(kingdom, taxonomy[,1]),])
-  
+
   phyla <- as.vector(levels(as.factor(gsub("[^;]*;([^;]*;).*", "\\1", sub.tax))))
   phyla <- sum(!grepl(kingdom, phyla))
-  
+
   class <- as.vector(levels(as.factor(gsub("[^;]*;[^;]*;([^;]*;).*", "\\1", sub.tax))))
   class <- sum(!grepl(kingdom, class))
-  
+
   order <- as.vector(levels(as.factor(gsub("[^;]*;[^;]*;[^;]*;([^;]*;).*", "\\1", sub.tax))))
   order <- sum(!grepl(kingdom, order))
-  
+
   family <- as.vector(levels(as.factor(gsub("[^;]*;[^;]*;[^;]*;[^;]*;([^;]*;).*", "\\1", sub.tax))))
   family <- sum(!grepl(kingdom, family))
-  
+
   genus <- as.vector(levels(as.factor(gsub("[^;]*;[^;]*;[^;]*;[^;]*;[^;]*;([^;]*;).*", "\\1", sub.tax))))
   genus <- sum(!grepl(kingdom, genus))
 
@@ -211,3 +211,6 @@ mothur "#pcr.seqs(fasta=silva.nr_v119.align, start=11894, end=25319, keepdots=F,
 {% endhighlight %}
 
 This will get you 104,711 unique sequences to then align against (meh.). Other tricks to consider would be to use `get.lineage` to pull out the reference sequences that are from the Bacteria, this will probably only reduce the size of the database by ~10%. You could also try using `filter.seqs` with vertical=T; however, that might be problematic if there are insertions in your sequences (can't know *a priori*). It's likely that you can just use the `silva.seed_v119.align` reference for aligning. For classifying sequences, I would strongly recommend using the `silva.nr_v119.align` and `silva.nr_v119.tax` references after running pcr.seqs on `silva.nr_v119.align`. I probably wouldn't advise using `unique.seqs` on the output.
+
+
+[ ***Update November 19, 2014:*** Updated the Building the SEED references section to respond to Elmar's comments ]
