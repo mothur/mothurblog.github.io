@@ -8,6 +8,7 @@ comments: true
 The good people at [SILVA](http://arb-silva.de) have released a new version of the SILVA database. A little bit of tweaking is needed to get their files to be compatible with mothur. This README document describes the process that I used to generate the [mothur-compatible reference files](http://www.mothur.org/wiki/Silva_reference_files).
 
 ## Curation of references
+
 ### Getting the data in and out of the ARB database
 This README file explains how we generated the silva reference files for use with mothur's classify.seqs and align.seqs commands. I'll assume that you have a functioning copy of arb installed on your comptuer. For this README we are using version 6.0. First we need to download the database and decompress it. From the command line we do the following:
 
