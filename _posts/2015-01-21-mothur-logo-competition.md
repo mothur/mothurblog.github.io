@@ -2,7 +2,7 @@
 layout: post
 title: "We need a mothur logo (and stickers!)"
 author: "P.D. Schloss"
-date: "January 7, 2015"
+date: "January 21, 2015"
 comments: true
 ---
 
