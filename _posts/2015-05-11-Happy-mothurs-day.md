@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Happy mothur's day"
+title: "Happy mothur's day!"
 author: "P.D. Schloss"
 date: "May 11, 2015"
 comments: true
