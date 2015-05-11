@@ -16,7 +16,7 @@ Back in January I announced a competition to generate a new mothur logo that we 
 
 <img src="{{ site.url }}/assets/mothur_RGB.png" style="margin:0px auto;display:block" width="400">
 
-I felt like it really captured the concept from the original picture as well as the roots of the project going back to the days of looking at Sanger chromatograms. Thanks to Lisa for the great design! I asked Linda to provide a small introduction of herself...
+I felt like it really captured the concept from the original picture as well as the roots of the project going back to the days of looking at Sanger chromatograms. Thanks to Linda for the great design! I asked Linda to provide a small introduction of herself...
 
 > My name is Linda Wampach and I’m from the small but cozy piece of land, called Luxembourg. I’m a doctoral student at the Luxembourg Centre for Systems Biomedicine and my main focus is the colonization of the gastrointestinal microbiome in newborns. Besides being busy with wet lab techniques and bioinformatics softwares on a daily basis, I’ve grown particularly fond of scientific illustrations and use my free time to learn more about graphic design and to enhance my skills.
 
