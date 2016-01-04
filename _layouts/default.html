@@ -11,7 +11,10 @@
     <div class="page-content">
       <div class="wrap">
       {{ content }}
-       {% include comments.html %}
+
+	  {% if page.comments %}
+	  	{% include comments.html %}
+	  {% endif %}
      </div>
     </div>
 
