@@ -10,11 +10,13 @@
 
     <div class="page-content">
       <div class="wrap">
-      {{ content }}
+		  <div class="container-fluid">
+		      {{ content }}
 
-	  {% if page.comments %}
-	  	{% include comments.html %}
-	  {% endif %}
+			  {% if page.comments %}
+			  	{% include comments.html %}
+			  {% endif %}
+		  </div>
      </div>
     </div>
 
