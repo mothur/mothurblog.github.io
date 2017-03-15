@@ -5,7 +5,6 @@ author: "Patrick D. Schloss"
 date: "March 15, 2017"
 ---
 
-
 The good people at the [RDP](http://rdp.cme.msu.edu) have released a new version of the RDP database. A little bit of tweaking is needed to get their files to be compatible with mothur. This README document describes the process that I used to generate the [mothur-compatible reference files](http://mothur.org/wiki/RDP_reference_files). The original files are available from the RDPs [sourceforge server](http://sourceforge.net/projects/rdp-classifier/files/RDP_Classifier_TrainingData/) and were used as the starting point for this README.
 
 The [release notes](http://rdp.cme.msu.edu/misc/rel10info.jsp#release11_history) indicate the following:
