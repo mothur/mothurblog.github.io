@@ -9,7 +9,6 @@ github_username:  pschloss
 
 # Build settings
 permalink: pretty
-markdown: redcarpet
 github:
   repo:           github.com/mothurblog/mothurblog.github.io
 
