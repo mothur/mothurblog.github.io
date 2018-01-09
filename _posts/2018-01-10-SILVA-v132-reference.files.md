@@ -2,7 +2,7 @@
 layout: post
 title: "README for the SILVA v132 reference files"
 author: "PD Schloss"
-date: "January 9, 2018"
+date: "January 10, 2018"
 ---
 
 The good people at [SILVA](http://arb-silva.de) have released a new version of the SILVA database. A little bit of tweaking is needed to get their files to be compatible with mothur. This README document describes the process that I used to generate the [mothur-compatible reference files](http://www.mothur.org/wiki/Silva_reference_files).
@@ -14,7 +14,7 @@ Curation of references
 
 This README file explains how we generated the silva reference files for use with mothur's classify.seqs and align.seqs commands. I'll assume that you have a functioning copy of arb installed on your computer. For this README we are using version 6.0. First we need to download the database and decompress it. From the command line we do the following:
 
-		wget -N https://www.arb-silva.de/fileadmin/arb_web_db/release_132/ARB_files/SILVA_132_SSURef_NR99_13_12_17_opt.arb.gz
+	wget -N https://www.arb-silva.de/fileadmin/arb_web_db/release_132/ARB_files/SILVA_132_SSURef_NR99_13_12_17_opt.arb.gz
     gunzip SILVA_132_SSURef_NR99_13_12_17_opt.arb.gz
     arb SILVA_132_SSURef_NR99_13_12_17_opt.arb
 
@@ -93,7 +93,7 @@ Thanks to [Eric Collins at the University of Alaska Fairbanks](https://mothur.or
 
 	outlevels <- c("domain","phylum","class","order","family","genus")
 
-	for (i in 1:nrow(map.in)) {
+	for(i in 1:nrow(map.in)) {
 		taxname <- unlist(strsplit(as.character(map.in[i,1]), split=';'))
 		#print(taxname);
 
@@ -107,10 +107,10 @@ Thanks to [Eric Collins at the University of Alaska Fairbanks](https://mothur.or
 		}
 	}
 
-	for (i in 1:nrow(tax.mat)) {
+	for(i in 1:nrow(tax.mat)) {
 		#this fills in the empty gaps by using the closest higher taxonomic level appended with an abbreviation for the current taxonomic level
 		#if you don't want this behavior, cut it out
-		for (j in 1:ncol(tax.mat)) {
+		for(j in 1:ncol(tax.mat)) {
 			if(tax.mat[i,j] < 0) { tax.mat[i,j] <- paste(tmptax,taxabb[j],sep="_")}
 			else { tmptax <- tax.mat[i,j]}
 		}
@@ -138,9 +138,9 @@ Thanks to [Eric Collins at the University of Alaska Fairbanks](https://mothur.or
 
 	#we want to see whether everything has 6 taxonomic level (kingdom to genus)
 	getDepth <- function(taxonString){
-	  initial <- nchar(taxonString)
-	    removed <- nchar(gsub(";", "", taxonString))
-	    return(initial-removed)
+		initial <- nchar(taxonString)
+		removed <- nchar(gsub(";", "", taxonString))
+		return(initial-removed)
 	}
 
 	depth <- getDepth(tax.write$taxout)
