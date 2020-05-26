@@ -12,6 +12,5 @@ permalink: pretty
 github:
   repo:           github.com/mothurblog/mothurblog.github.io
 
-gems:
+plugins:
   - jekyll-sitemap
-
