@@ -2,7 +2,7 @@
 layout: post
 title: "README for the SILVA v138.1 reference files"
 author: "PD Schloss"
-date: "February, 22, 2022"
+date: "February 22, 2021"
 ---
 
 The good people at [SILVA](http://arb-silva.de) have released a new version of the SILVA v138 database. My understanding is that this is a minor update to correct some taxonomic information. A little bit of tweaking is needed to get their files to be compatible with mothur. This README document describes the process that I used to generate the [mothur-compatible reference files](http://www.mothur.org/wiki/Silva_reference_files).
