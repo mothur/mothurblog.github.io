@@ -13,3 +13,4 @@ _site
 
 # R data files from past sessions
 .Rdata
+Gemfile.lock
